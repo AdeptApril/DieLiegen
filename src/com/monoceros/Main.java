@@ -58,6 +58,7 @@ Main activities -
 Other notes -
     This could work as test-driven development, but I think I'd want a few rounds of what the user would expect to happen in order to design the tests
     Obviously, this doesn't preclude having tests anyway.
+    TODO: Check for and/or catch various edge cases like blank vehicle names or other weird input. This is more of a, "think about more edge cases" than any certainty of bad things happening.
  */
 
 import java.util.*;
@@ -69,6 +70,7 @@ public class Main {
         String menuChoice;
         String plate; //This could probably be placed in a better spot. E.g., less global, but it's used across multiple
                         //cases in the menu, and might be used elsewhere for currently-cared-about vehicle.
+        Garage myGarage;
 
         //Adding vehicles to the map
         vehicles.put("C1", new Vehicle("C1", "car"));
@@ -80,6 +82,9 @@ public class Main {
         vehicles.put("B2", new Vehicle("B2", "motorbike"));
         vehicles.put("C6", new Vehicle("C6", "car"));
         vehicles.put("C7", new Vehicle("C7", "car"));
+
+        //Making a garage
+        myGarage = new Garage(3, 2, "Die Ligen");
 
         while(true)
         {
@@ -103,14 +108,51 @@ public class Main {
                 case "2": //lookup vehicle
                     System.out.println("Please enter licence plate of vehicle you'd like to find:");
                     plate = getLicencePlate();
+                    if(vehicles.containsKey(plate) && vehicles.get(plate).isInGarage())
+                    {
+                        //(response should include parking level and assigned parking spot)
+                        System.out.println("The vehicle is located on floor: " + vehicles.get(plate).getGarageLevel()
+                            + " and is in spot: " + vehicles.get(plate).getSpotNum());
+                    }
+                    else {
+                        System.out.println("I'm sorry; I don't seem to see that vehicle in the garage.");
+                    }
                     break;
                 case "3": //park vehicle
                     System.out.println("Please enter licence plate of vehicle you'd like to park:");
                     plate = getLicencePlate();
+                    if(vehicles.containsKey(plate))
+                    {
+                        Vehicle vehicle = vehicles.get(plate);
+                        if(vehicle.isInGarage())
+                        {
+                            System.out.println("I'm sorry; that vehicle is already parked.");
+                        } else //vehicle exists and is not already parked
+                        {
+                            myGarage.park(vehicle);
+                        }
+                    } else
+                    {
+                        System.out.println("I'm sorry, but I can't find that vehicle");
+                    }
                     break;
                 case "4": //unpark vehicle
                     System.out.println("Please enter licence plate of vehicle you'd like to unpark:");
                     plate = getLicencePlate();
+                    if(vehicles.containsKey(plate))
+                    {
+                        Vehicle vehicle = vehicles.get(plate);
+                        if(!vehicle.isInGarage())
+                        {
+                            System.out.println("I'm sorry; that vehicle isn't parked in the garage.");
+                        } else //vehicle exists and is parked in the garage
+                        {
+                            myGarage.unPark(vehicle);
+                        }
+                    } else
+                    {
+                        System.out.println("I'm sorry, but I can't find that vehicle");
+                    }
                     break;
                 case "0": //Exit program
                     return;
@@ -124,10 +166,10 @@ public class Main {
     private static String menu()
     {
         System.out.println();
-        System.out.println("Welcome to the Die Ligen parking garage!"); //TODO: get name from Garage class
+        System.out.println("Welcome to the Die Ligen parking garage!"); //Would get name from garage class, but this is static, so would have to be re-written in a different way
         System.out.println("How can we help you?");
         System.out.println("1. List vehicles");
-        System.out.println("2. Lookup vehicle");
+        System.out.println("2. Lookup vehicle in garage");
         System.out.println("3. Park vehicle");
         System.out.println("4. Unpark vehicle");
         System.out.println("0. Exit Program");
