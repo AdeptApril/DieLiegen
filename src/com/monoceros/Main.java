@@ -178,22 +178,6 @@ public class Main {
     }
 
     /*
-    Upon receipt of a vehicle, prints out parking level and assigned parking spot
-     */
-    private void lookupVehicle(Vehicle vehicle)
-    {
-
-    }
-
-    /*
-    Lists available vehicles (in garage or not)
-     */
-    private void listVehicles()
-    {
-
-    }
-
-    /*
     Helpful method for getting licence plate from user
      */
     private static String getLicencePlate()
