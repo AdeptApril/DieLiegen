@@ -7,53 +7,62 @@ vehicle traits - licence plate (using that spelling instead of "license" because
         - Maybe vehicle type? At which point it becomes questionably useful to have polymorphism. Hackathon coding would definitely go with a vehicle, and probably a good idea for a quick implementation, so I think I'll go with that for the first run.
         - Perhaps garage level and parking spot number? Could also be tracked in garage class.
 */
-public class Vehicle {
+class Vehicle {
     private String licencePlate;
     private String vehicleType;
     private boolean inGarage;
     private int garageLevel;
-
+    private int spotNum;
     /*
     Constructor that creates a new vehicle with a given licence plate and type.
     Possible problem -- no duplicate checking on licence plate. But that's for another class
      */
-    public Vehicle(String plate, String type)
+    Vehicle(String plate, String type)
     {
         licencePlate = plate;
         vehicleType = type;
         inGarage = false;
         garageLevel = -1; //This may be problematic, as there are basement levels in garages. So numbering of garages should avoid that.
+        spotNum = -1;
     }
 
-    public String getLicencePlate() {
+    String getLicencePlate() {
         return licencePlate;
     }
 
-    public void setLicencePlate(String licencePlate) {
+    void setLicencePlate(String licencePlate) {
         this.licencePlate = licencePlate;
     }
 
-    public String getVehicleType() {
+    String getVehicleType() {
         return vehicleType;
     }
 
-    public void setVehicleType(String vehicleType) {
+    void setVehicleType(String vehicleType) {
         this.vehicleType = vehicleType;
     }
 
-    public boolean isInGarage() {
+    boolean isInGarage() {
         return inGarage;
     }
 
-    public void setInGarage(boolean inGarage) {
+    void setInGarage(boolean inGarage) {
         this.inGarage = inGarage;
     }
 
-    public int getGarageLevel() {
+    int getGarageLevel() {
         return garageLevel;
     }
 
-    public void setGarageLevel(int garageLevel) {
+    void setGarageLevel(int garageLevel) {
         this.garageLevel = garageLevel;
+    }
+
+    int getSpotNum() {
+        return spotNum;
+    }
+
+    void setSpotNum(int spotNum) {
+        this.spotNum = spotNum;
     }
 }

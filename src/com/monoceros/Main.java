@@ -37,6 +37,7 @@ Have a garage class
            - getLevel(vehicle) method - returns level number (could be letters, but using ints seems easiest)
            - getParkingSpot(vehicle) method - returns parking space number -- and this is number on a certain level.
            - constructor should take in levels and parking spaces per level
+           - Maybe a name?
 
 Things that are much more open to interpretation:
 How to add vehicles?
@@ -50,25 +51,113 @@ Main activities -
     Running of the garage
         - list vehicles
         - lookup vehicle (response should include parking level and assigned parking spot)
+        - park vehicle
+        - unpark vehicle
+        - exit program
 
 Other notes -
     This could work as test-driven development, but I think I'd want a few rounds of what the user would expect to happen in order to design the tests
     Obviously, this doesn't preclude having tests anyway.
  */
 
+import java.util.*;
+
 public class Main {
 
     public static void main(String[] args) {
-	// write your code here
+        Map<String, Vehicle> vehicles = new HashMap<>(); //Vehicle located by plate number
+        String menuChoice;
+        String plate; //This could probably be placed in a better spot. E.g., less global, but it's used across multiple
+                        //cases in the menu, and might be used elsewhere for currently-cared-about vehicle.
+
+        //Adding vehicles to the map
+        vehicles.put("C1", new Vehicle("C1", "car"));
+        vehicles.put("C2", new Vehicle("C2", "car"));
+        vehicles.put("B1", new Vehicle("B1", "motorbike"));
+        vehicles.put("C3", new Vehicle("C3", "car"));
+        vehicles.put("C4", new Vehicle("C4", "car"));
+        vehicles.put("C5", new Vehicle("C5", "car"));
+        vehicles.put("B2", new Vehicle("B2", "motorbike"));
+        vehicles.put("C6", new Vehicle("C6", "car"));
+        vehicles.put("C7", new Vehicle("C7", "car"));
+
+        while(true)
+        {
+            menuChoice = menu();
+            switch(menuChoice) {
+                case "1": //List vehicles
+                    for(Map.Entry<String, Vehicle> e : vehicles.entrySet())
+                    {
+                        Vehicle vehicle = e.getValue();
+                        System.out.print("Plate: " + vehicle.getLicencePlate()
+                                + " - vehicle type: " + vehicle.getVehicleType()
+                                + " - in garage? " + vehicle.isInGarage());
+                        if(vehicle.isInGarage())
+                        {
+                            System.out.print(" - Garage level: " + vehicle.getGarageLevel()
+                                + " - parking spot: " + vehicle.getSpotNum());
+                        }
+                        System.out.println();
+                    }
+                    break;
+                case "2": //lookup vehicle
+                    System.out.println("Please enter licence plate of vehicle you'd like to find:");
+                    plate = getLicencePlate();
+                    break;
+                case "3": //park vehicle
+                    System.out.println("Please enter licence plate of vehicle you'd like to park:");
+                    plate = getLicencePlate();
+                    break;
+                case "4": //unpark vehicle
+                    System.out.println("Please enter licence plate of vehicle you'd like to unpark:");
+                    plate = getLicencePlate();
+                    break;
+                case "0": //Exit program
+                    return;
+                default:
+                    System.out.println("I'm sorry, I didn't understand that choice. Here's the menu again:");
+                    break;
+            }
+        }
     }
 
-//    private void lookupVehicle(Vehicle vehicle)
-//    {
-//
-//    }
+    private static String menu()
+    {
+        System.out.println();
+        System.out.println("Welcome to the Die Ligen parking garage!"); //TODO: get name from Garage class
+        System.out.println("How can we help you?");
+        System.out.println("1. List vehicles");
+        System.out.println("2. Lookup vehicle");
+        System.out.println("3. Park vehicle");
+        System.out.println("4. Unpark vehicle");
+        System.out.println("0. Exit Program");
+        Scanner in = new Scanner(System.in);
+        return in.nextLine();
+    }
 
+    /*
+    Upon receipt of a vehicle, prints out parking level and assigned parking spot
+     */
+    private void lookupVehicle(Vehicle vehicle)
+    {
+
+    }
+
+    /*
+    Lists available vehicles (in garage or not)
+     */
     private void listVehicles()
     {
 
+    }
+
+    /*
+    Helpful method for getting licence plate from user
+     */
+    private static String getLicencePlate()
+    {
+        System.out.println("Please enter licence plate:");
+        Scanner in = new Scanner(System.in);
+        return in.nextLine();
     }
 }
